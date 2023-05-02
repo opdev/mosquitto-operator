@@ -18,6 +18,7 @@ spec:
       containers:
         - image: "eclipse-mosquitto:2.0"
           name: "mosquitto"
+          command: ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
           volumeMounts:
             - name: config
               mountPath: /mosquitto/config
