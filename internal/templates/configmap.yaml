@@ -15,4 +15,6 @@ data:
     # keyfile /myuser/server.key
     {{if .Values.AuthEnabled}}
     password_file /myuser/passwd
+    {{else}}
+    allow_anonymous true
     {{end}}
