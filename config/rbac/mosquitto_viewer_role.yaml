@@ -1,0 +1,27 @@
+# permissions for end users to view mosquittoes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: mosquitto-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: mosquitto-operator
+    app.kubernetes.io/part-of: mosquitto-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: mosquitto-viewer-role
+rules:
+- apiGroups:
+  - messaging.eclipse.org
+  resources:
+  - mosquittoes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - messaging.eclipse.org
+  resources:
+  - mosquittoes/status
+  verbs:
+  - get

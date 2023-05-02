@@ -1,0 +1,46 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Values.Name }}
+  namespace: {{ .Values.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mosquitto
+      mosquitto_cr: {{ .Values.Name }}
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+        mosquitto_cr: {{ .Values.Name }}
+    spec:
+      containers:
+        - image: "eclipse-mosquitto:2.0"
+          name: "mosquitto"
+          volumeMounts:
+            - name: config
+              mountPath: /mosquitto/config
+            - name: data
+              mountPath: /mosquitto/data
+            - name: log
+              mountPath: /mosquitto/log
+          ports:
+            - containerPort: 1883
+            - containerPort: 9001
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Values.Name }}
+        - name: data
+        {{ if .Values.Spec.Persist -}}
+          persistentVolumeClaim:
+            claimName: {{ .Values.Name }}
+        {{ else }}
+          emptyDir:
+            sizeLimit: 1Gi
+        {{- end }}
+        - name: log
+          emptyDir:
+            sizeLimit: 500Mi
+        
