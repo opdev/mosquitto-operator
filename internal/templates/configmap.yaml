@@ -1,8 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.Name }}
+  generateName: mosquitto-conf-
   namespace: {{ .Values.Namespace }}
+  labels:
+    app: mosquitto
+    mosquitto: {{ .Values.Name }}
 data:
   mosquitto.conf: |
     # Port for plaintext communication

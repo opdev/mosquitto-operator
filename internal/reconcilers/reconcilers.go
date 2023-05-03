@@ -90,16 +90,18 @@ func reconcileResource(
 		}
 	}
 
+	current = desired.DeepCopyObject().(client.Object)
+
 	log.Info(
 		"Finished reconciling resource",
-		"Kind", desired.GetObjectKind().GroupVersionKind().Kind,
-		"Name", desired.GetName(),
-		"Namespace", desired.GetNamespace(),
+		"Kind", current.GetObjectKind().GroupVersionKind().Kind,
+		"Name", current.GetName(),
+		"Namespace", current.GetNamespace(),
 	)
 	return nil
 }
 
-func getResource(ctx context.Context, client client.Client, req ctrl.Request, resource client.Object) (*ctrl.Result, error) {
+func GetResource(ctx context.Context, client client.Client, req ctrl.Request, resource client.Object) (*ctrl.Result, error) {
 	log := ctrllog.FromContext(ctx)
 
 	err := client.Get(ctx, req.NamespacedName, resource)

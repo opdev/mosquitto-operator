@@ -19,7 +19,7 @@ package controllers
 import (
 	"context"
 
-	messagingv1alpha1 "github.com/opdev/mosquitto-operator/api/v1alpha1"
+	"github.com/opdev/mosquitto-operator/api/v1alpha1"
 	"github.com/opdev/mosquitto-operator/internal/reconcilers"
 	"github.com/opdev/mosquitto-operator/internal/templates"
 
@@ -45,15 +45,20 @@ type MosquittoReconciler struct {
 func (r *MosquittoReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
+	var mosquitto v1alpha1.Mosquitto
+	if r, err := reconcilers.GetResource(ctx, r.Client, req, &mosquitto); subreconciler.ShouldHaltOrRequeue(r, err) {
+		return *r, err
+	}
+
 	fs := templates.Templates
 
-	subreconcilers := []subreconciler.FnWithRequest{
-		reconcilers.ReconcileConfigMap(r.Client, r.Scheme, fs),
-		reconcilers.ReconcileDeployment(r.Client, r.Scheme, fs),
+	subreconcilers := []subreconciler.Fn{
+		reconcilers.ReconcileConfigMap(&mosquitto, r.Client, fs),
+		reconcilers.ReconcileDeployment(&mosquitto, r.Client, fs),
 	}
 
 	for _, r := range subreconcilers {
-		res, err := r(ctx, req)
+		res, err := r(ctx)
 		if subreconciler.ShouldHaltOrRequeue(res, err) {
 			return subreconciler.Evaluate(res, err)
 		}
@@ -65,6 +70,6 @@ func (r *MosquittoReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 // SetupWithManager sets up the controller with the Manager.
 func (r *MosquittoReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&messagingv1alpha1.Mosquitto{}).
+		For(&v1alpha1.Mosquitto{}).
 		Complete(r)
 }

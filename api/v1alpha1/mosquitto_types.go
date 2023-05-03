@@ -29,8 +29,7 @@ type MosquittoSpec struct {
 
 // MosquittoStatus defines the observed state of Mosquitto
 type MosquittoStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	MosquittoConfConfigMap string `json:"mosquittoConfConfigMap,omitempty"`
 }
 
 //+kubebuilder:object:root=true
