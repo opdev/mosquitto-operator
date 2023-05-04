@@ -21,7 +21,7 @@ data:
     # certfile /myuser/server.crt
     # cafile /myuser/ca.crt
     # keyfile /myuser/server.key
-    {{if .Values.AuthEnabled}}
+    {{if .Values.Auth.Enabled}}
     password_file /myuser/passwd
     {{else}}
     allow_anonymous true

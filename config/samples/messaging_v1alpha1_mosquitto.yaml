@@ -9,6 +9,6 @@ metadata:
     app.kubernetes.io/created-by: mosquitto-operator
   name: mosquitto-sample
 spec:
-  authEnabled: false
-  authSecret: notenabled
-  persist: false  
+  auth:
+    enabled: false
+  persist: false

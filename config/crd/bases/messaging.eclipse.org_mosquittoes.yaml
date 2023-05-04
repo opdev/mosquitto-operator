@@ -35,10 +35,18 @@ spec:
           spec:
             description: MosquittoSpec defines the desired state of Mosquitto
             properties:
-              authEnabled:
-                type: boolean
-              authSecret:
-                type: string
+              auth:
+                description: MosquittoAuth defines the desired state of Auth for Mosquitto
+                  By default, it is disabled
+                properties:
+                  enabled:
+                    default: false
+                    type: boolean
+                  secret:
+                    type: string
+                required:
+                - enabled
+                type: object
               persist:
                 type: boolean
             type: object

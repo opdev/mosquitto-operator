@@ -22,9 +22,16 @@ import (
 
 // MosquittoSpec defines the desired state of Mosquitto
 type MosquittoSpec struct {
-	Persist     bool   `json:"persist,omitempty"`
-	AuthEnabled bool   `json:"authEnabled,omitempty"`
-	AuthSecret  string `json:"authSecret,omitempty"`
+	Persist bool          `json:"persist,omitempty"`
+	Auth    MosquittoAuth `json:"auth,omitempty"`
+}
+
+// MosquittoAuth defines the desired state of Auth for Mosquitto
+// By default, it is disabled
+type MosquittoAuth struct {
+	//+kubebuilder:default:=false
+	Enabled bool   `json:"enabled"`
+	Secret  string `json:"secret,omitempty"`
 }
 
 // MosquittoStatus defines the observed state of Mosquitto

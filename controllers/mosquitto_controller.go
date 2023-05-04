@@ -46,8 +46,8 @@ func (r *MosquittoReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	_ = log.FromContext(ctx)
 
 	var mosquitto v1alpha1.Mosquitto
-	if r, err := reconcilers.GetResource(ctx, r.Client, req, &mosquitto); subreconciler.ShouldHaltOrRequeue(r, err) {
-		return *r, err
+	if res, err := reconcilers.GetResource(ctx, r.Client, req, &mosquitto); subreconciler.ShouldHaltOrRequeue(res, err) {
+		return *res, err
 	}
 
 	fs := templates.Templates
