@@ -10,6 +10,11 @@ data:
   mosquitto.conf: |
     # Port for plaintext communication
     listener 1883
+    protocol mqtt
+
+    # Port for websocket communication
+    listener 1884
+    protocol websockets
     
     # Port and certificates for TLS encrypted communication
     # listener 8883

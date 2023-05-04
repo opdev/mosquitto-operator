@@ -28,7 +28,9 @@ spec:
               mountPath: /mosquitto/log
           ports:
             - containerPort: 1883
-            - containerPort: 9001
+              name: http-mqtt-svc
+            - containerPort: 1884
+              name: webs-mqtt-svc
       volumes:
         - name: config
           configMap:

@@ -55,6 +55,7 @@ func (r *MosquittoReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	subreconcilers := []subreconciler.Fn{
 		reconcilers.ReconcileConfigMap(&mosquitto, r.Client, fs),
 		reconcilers.ReconcileDeployment(&mosquitto, r.Client, fs),
+		reconcilers.ReconcileService(&mosquitto, r.Client, fs),
 	}
 
 	for _, r := range subreconcilers {

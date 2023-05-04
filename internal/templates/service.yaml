@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mosquitto
+  namespace: {{ .Values.Namespace }}
+  labels:
+    app: mosquitto
+    mosquitto: {{ .Values.Name }} 
+spec:
+  ports:
+    - port: 1883
+      targetPort: http-mqtt-svc
+      protocol: TCP
+      name: http-mqtt-svc
+    - port: 1884
+      targetPort: webs-mqtt-svc
+      protocol: TCP
+      name: webs-mqtt-svc
+  selector:
+    app: mosquitto
+    mosquitto: {{ .Values.Name }}
