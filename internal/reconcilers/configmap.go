@@ -2,7 +2,6 @@ package reconcilers
 
 import (
 	"context"
-	"io/fs"
 
 	"github.com/opdev/mosquitto-operator/api/v1alpha1"
 	"github.com/opdev/mosquitto-operator/internal/templates"
@@ -12,9 +11,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ReconcileConfigMap(mosquitto *v1alpha1.Mosquitto, client client.Client, fs fs.ReadFileFS) subreconciler.Fn {
+func ReconcileConfigMap(mosquitto *v1alpha1.Mosquitto, client client.Client) subreconciler.Fn {
 	return func(ctx context.Context) (*ctrl.Result, error) {
-		configmap, err := templates.ResourceFromTemplate[v1alpha1.Mosquitto, corev1.ConfigMap](mosquitto, "configmap", fs)
+		configmap, err := templates.ResourceFromTemplate[v1alpha1.Mosquitto, corev1.ConfigMap](mosquitto, "configmap")
 		if err != nil {
 			return subreconciler.RequeueWithError(err)
 		}

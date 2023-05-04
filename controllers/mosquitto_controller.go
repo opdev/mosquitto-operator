@@ -21,7 +21,6 @@ import (
 
 	"github.com/opdev/mosquitto-operator/api/v1alpha1"
 	"github.com/opdev/mosquitto-operator/internal/reconcilers"
-	"github.com/opdev/mosquitto-operator/internal/templates"
 
 	"github.com/opdev/subreconciler"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -50,11 +49,9 @@ func (r *MosquittoReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 		return *r, err
 	}
 
-	fs := templates.Templates
-
 	subreconcilers := []subreconciler.Fn{
-		reconcilers.ReconcileConfigMap(&mosquitto, r.Client, fs),
-		reconcilers.ReconcileDeployment(&mosquitto, r.Client, fs),
+		reconcilers.ReconcileConfigMap(&mosquitto, r.Client),
+		reconcilers.ReconcileDeployment(&mosquitto, r.Client),
 	}
 
 	for _, r := range subreconcilers {
