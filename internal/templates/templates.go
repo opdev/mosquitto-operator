@@ -4,17 +4,16 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"io/fs"
 	"text/template"
 
 	"k8s.io/apimachinery/pkg/util/yaml"
 )
 
 //go:embed *.yaml
-var Templates embed.FS
+var templates embed.FS
 
-func ResourceFromTemplate[T any, R any](t *T, name string, fs fs.ReadFileFS) (*R, error) {
-	resYaml, err := fs.ReadFile(fmt.Sprintf("%s.yaml", name))
+func ResourceFromTemplate[T any, R any](t *T, name string) (*R, error) {
+	resYaml, err := templates.ReadFile(fmt.Sprintf("%s.yaml", name))
 	if err != nil {
 		return nil, fmt.Errorf("could not read %s template: %v", name, err)
 	}
